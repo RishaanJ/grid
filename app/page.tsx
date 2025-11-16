@@ -1,65 +1,49 @@
-import Image from "next/image";
+"use client"
+import { useState, useEffect } from "react"
+import VerticalNavbar from "./components/VerticalNavbar"
+import Map from "./components/map"
+import Daashboard from "./components/dashboard"
+import Analytics from "./components/analytics"
 
-export default function Home() {
+export interface Node {
+  id: string
+  name: string
+  coords: [number, number]
+  temperature: number
+  humidity: number
+  rainfall: number
+  heat_absorption: number
+  impervious_surface: number
+  flood_history: number
+  heatwave_history: number
+  hazard_prob: number
+  trees_missing: number
+  shade_missing: number
+  drainage_missing: number
+  cvs?: number
+  status?: string
+}
+
+export default function DashboardPage() {
+  const [page, setPage] = useState("map")
+  const [nodes, setNodes] = useState<Node[]>([
+    { id: "1", name: "Node 1", coords: [-121.987, 37.55], temperature:0.7, humidity:0.4, rainfall:0.5, heat_absorption:0.8, impervious_surface:0.7, flood_history:0.2, heatwave_history:0.3, hazard_prob:0.6, trees_missing:0.8, shade_missing:0.7, drainage_missing:0.9 },
+    { id: "2", name: "Node 2", coords: [-122.045, 37.566], temperature:0.6, humidity:0.6, rainfall:0.7, heat_absorption:0.5, impervious_surface:0.2, flood_history:0.1, heatwave_history:0.1, hazard_prob:0.2, trees_missing:0.1, shade_missing:0.3, drainage_missing:0.2 },
+    { id: "3", name: "Node 3", coords: [-121.995, 37.562], temperature:0.8, humidity:0.5, rainfall:0.6, heat_absorption:0.7, impervious_surface:0.6, flood_history:0.3, heatwave_history:0.4, hazard_prob:0.5, trees_missing:0.6, shade_missing:0.5, drainage_missing:0.7 },
+    { id: "4", name: "Node 4", coords: [-121.980, 37.558], temperature:0.5, humidity:0.7, rainfall:0.4, heat_absorption:0.6, impervious_surface:0.5, flood_history:0.2, heatwave_history:0.2, hazard_prob:0.3, trees_missing:0.4, shade_missing:0.6, drainage_missing:0.5 },
+    { id: "5", name: "Node 5", coords: [-122.010, 37.570], temperature:0.6, humidity:0.4, rainfall:0.5, heat_absorption:0.8, impervious_surface:0.7, flood_history:0.3, heatwave_history:0.3, hazard_prob:0.4, trees_missing:0.7, shade_missing:0.6, drainage_missing:0.8 },
+  ])
+
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div>
+      <VerticalNavbar onPageChange={setPage} />
+
+      {page === "map" && <Map nodes={nodes} setNodes={setNodes} />}
+      {page === "analytics" && <Analytics nodes={nodes} />}
+      {page === "device" && <Daashboard nodes={nodes} setNodes={setNodes} />}
+      {page === "ai" && <div>ai page here</div>}
+      {page === "profile" && <div>profile page here</div>}
     </div>
-  );
+  )
 }
